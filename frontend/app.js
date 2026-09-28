@@ -1,4 +1,4 @@
-const API_URL = "http://localhost:8000";
+const API_URL = "";
 const input = document.getElementById("file-input");
 const statusBox = document.getElementById("upload-status");
 const title = document.getElementById("document-title");
