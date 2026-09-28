@@ -33,14 +33,15 @@ Verity is being built incrementally. The first milestone establishes the reposit
 
 ## Local development
 
-Backend:
+The backend virtual environment can live inside `backend/.venv`. From the repository root:
 
 ```powershell
 cd backend
 python -m venv .venv
 .\.venv\Scripts\Activate.ps1
+cd ..
 python -m pip install -e ".[dev]"
-uvicorn app.main:app --reload
+python -m uvicorn app.main:app --reload
 ```
 
 API documentation:
