@@ -56,3 +56,22 @@ Never commit real API keys, passwords, database credentials, tokens, or private 
 ## License
 
 MIT
+
+## Research Workspace
+
+Verity now includes a simple browser workspace for the ingestion pipeline.
+
+Start the API:
+
+```bash
+python -m pip install -e ".[dev]"
+python -m uvicorn app.main:app --reload
+```
+
+Open:
+
+**http://localhost:8000/workspace/**
+
+You can upload a PDF, TXT, Markdown, CSV, JSON, or HTML document and immediately inspect its extracted metadata and evidence chunks.
+
+FastAPI's `UploadFile` is used for file uploads because it provides a file-like interface and avoids loading every upload into a plain bytes parameter. citeturn0search0turn0search1
