@@ -15,3 +15,14 @@ def test_health() -> None:
     response = client.get("/health")
     assert response.status_code == 200
     assert response.json()["status"] == "ok"
+
+
+def test_api_status():
+    from app.main import app
+    from fastapi.testclient import TestClient
+
+    client = TestClient(app)
+    response = client.get("/api/status")
+
+    assert response.status_code == 200
+    assert response.json()["status"] == "online"
