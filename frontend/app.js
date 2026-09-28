@@ -1,10 +1,14 @@
-const API_URL = (window.VERITY_CONFIG && window.VERITY_CONFIG.apiUrl) || "";
+const API_URL =
+  (window.VERITY_CONFIG && window.VERITY_CONFIG.apiUrl) || "";
+
 const input = document.getElementById("file-input");
 const statusBox = document.getElementById("upload-status");
 const title = document.getElementById("document-title");
 const statusPill = document.getElementById("document-status");
 const summary = document.getElementById("document-summary");
 const chunkList = document.getElementById("chunk-list");
+
+checkBackend();
 
 input.addEventListener("change", async () => {
   const file = input.files[0];
@@ -29,10 +33,36 @@ input.addEventListener("change", async () => {
 
     renderDocument(data);
     setStatus("Ready — " + data.chunk_count + " evidence chunk(s) created.", "success");
+    statusPill.textContent = "Ready";
   } catch (error) {
-    setStatus(error.message, "error");
+    setStatus(
+      "Backend unavailable. The workspace is still available, but document processing is offline.",
+      "error",
+    );
+    statusPill.textContent = "Offline";
   }
 });
+
+async function checkBackend() {
+  try {
+    const response = await fetch(API_URL + "/health", {
+      method: "GET",
+      signal: AbortSignal.timeout(4000),
+    });
+
+    if (!response.ok) {
+      throw new Error("Backend health check failed.");
+    }
+
+    statusPill.textContent = "API online";
+  } catch {
+    statusPill.textContent = "API offline";
+    setStatus(
+      "Verity workspace is online. Connect the backend to enable document processing.",
+      "error",
+    );
+  }
+}
 
 function renderDocument(document) {
   title.textContent = document.filename;
