@@ -1,4 +1,4 @@
-const API_URL = "";
+const API_URL = (window.VERITY_CONFIG && window.VERITY_CONFIG.apiUrl) || "";
 const input = document.getElementById("file-input");
 const statusBox = document.getElementById("upload-status");
 const title = document.getElementById("document-title");
