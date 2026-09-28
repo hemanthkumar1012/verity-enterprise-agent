@@ -74,4 +74,4 @@ Open:
 
 You can upload a PDF, TXT, Markdown, CSV, JSON, or HTML document and immediately inspect its extracted metadata and evidence chunks.
 
-FastAPI's `UploadFile` is used for file uploads because it provides a file-like interface and avoids loading every upload into a plain bytes parameter. citeturn0search0turn0search1
+FastAPI's `UploadFile` is used for file uploads because it provides a file-like interface and is suitable for uploaded files.
