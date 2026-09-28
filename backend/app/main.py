@@ -55,3 +55,12 @@ def health_check() -> dict[str, str]:
         "service": "verity",
         "version": "0.1.0",
     }
+
+
+@app.get("/api/status")
+def api_status() -> dict[str, str]:
+    return {
+        "service": "verity-api",
+        "status": "online",
+        "message": "Research API is ready.",
+    }
