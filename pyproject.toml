@@ -6,7 +6,7 @@ build-backend = "setuptools.build_meta"
 name = "verity-backend"
 version = "0.1.0"
 description = "Enterprise Multimodal Research & Action Agent"
-readme = "../README.md"
+readme = "README.md"
 requires-python = ">=3.12"
 dependencies = [
     "fastapi>=0.115,<1.0",
@@ -20,11 +20,14 @@ dev = [
     "ruff>=0.8,<1.0",
 ]
 
+[tool.setuptools]
+package-dir = {"" = "backend"}
+
 [tool.setuptools.packages.find]
-where = ["."]
+where = ["backend"]
 
 [tool.pytest.ini_options]
-testpaths = ["tests"]
+testpaths = ["backend/tests"]
 
 [tool.ruff]
 line-length = 100
