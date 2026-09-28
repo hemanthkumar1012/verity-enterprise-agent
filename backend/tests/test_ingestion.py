@@ -22,3 +22,19 @@ def test_ingest_document_creates_metadata_and_chunks():
     assert document.status == "ready"
     assert document.chunk_count == 1
     assert document.chunks[0].document_id == document.id
+
+
+def test_document_ingest_api():
+    from fastapi.testclient import TestClient
+
+    from app.main import app
+
+    client = TestClient(app)
+    response = client.post(
+        "/api/documents/ingest",
+        files={"file": ("notes.txt", b"API evidence test.", "text/plain")},
+    )
+
+    assert response.status_code == 200
+    assert response.json()["filename"] == "notes.txt"
+    assert response.json()["chunk_count"] == 1
