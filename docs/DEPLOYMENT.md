@@ -1,54 +1,58 @@
 # Verity Deployment
 
-Verity is designed as two independent deployments.
+Verity is designed as two independently deployable surfaces:
 
-## 1. Frontend — Vercel
+- Frontend: Vercel
+- Backend: FastAPI on Render
+- Database: managed PostgreSQL with pgvector when persistence is enabled
 
-Deploy the `frontend/` directory as a static site.
+## Frontend
 
-The frontend does not depend on FastAPI to render its page. This means the Verity interface can still open when the backend is unavailable.
+Deploy the frontend directory as a Vercel project.
 
-The browser calls the backend through the URL in:
+Set frontend/config.js to the public Render API URL:
 
-`frontend/config.js`
+    window.VERITY_CONFIG = {
+      apiUrl: "https://YOUR-RENDER-SERVICE.onrender.com",
+    };
 
-Before the production deployment, change:
+The frontend remains accessible if the API is unavailable. Upload and search actions show an offline state instead of breaking the workspace.
 
-```js
-window.VERITY_CONFIG = {
-  apiUrl: "https://YOUR-RENDER-SERVICE.onrender.com",
-};
-```
+## Backend
 
-## 2. Backend — Render
+Create a Render Web Service from the repository.
 
-The repository includes `render.yaml`.
-
-Render should use:
-
-- Root directory: repository root
 - Runtime: Python
-- Build: `pip install -e ".[dev]"`
-- Start: `uvicorn app.main:app --host 0.0.0.0 --port $PORT`
-- Health check: `/health`
+- Build command: pip install -e ".[dev]"
+- Start command: uvicorn app.main:app --host 0.0.0.0 --port $PORT
+- Health check: /health
 
-Render can automatically redeploy when the linked branch receives changes.
+Set these environment variables:
 
-## 3. CORS
+    ALLOWED_ORIGINS=https://YOUR-VERCEL-APP.vercel.app
+    DATABASE_URL=YOUR_POSTGRES_CONNECTION_STRING
 
-Set the Render environment variable:
+When DATABASE_URL is not configured, Verity uses the simple in-memory store for local development.
 
-`ALLOWED_ORIGINS=https://YOUR-VERCEL-APP.vercel.app`
+## Database
 
-For local development, keep localhost origins in `.env`.
+Use a PostgreSQL service with the pgvector extension enabled.
 
-## 4. Failure behavior
+The repository includes the baseline schema in infra/postgres/schema.sql. The API also creates its required tables and text-search index automatically on startup when DATABASE_URL is configured.
 
-The frontend and backend are intentionally separate:
+The current persistent retrieval path uses PostgreSQL full-text search. pgvector is enabled in the schema so semantic embeddings can be added without replacing the document model.
 
-- Vercel frontend down → backend remains independently available.
-- Render backend down → frontend UI still opens, but API-powered actions show an error.
-- Frontend deployment fails → existing Vercel deployment remains available.
-- Backend deployment fails → the previous successful Render deployment remains available.
+## Deployment order
 
-This separation makes debugging much easier while Verity is being built.
+1. Create the PostgreSQL/pgvector database.
+2. Configure DATABASE_URL on Render.
+3. Deploy the Render API and verify /health.
+4. Put the Render URL into frontend/config.js.
+5. Deploy frontend/ to Vercel.
+6. Upload a test document and verify evidence search.
+
+## Failure behavior
+
+- Frontend unavailable: backend remains independently deployable.
+- Backend unavailable: frontend remains viewable and shows an offline state.
+- Database unavailable during startup: the API will fail startup rather than silently pretending that persistent storage is available.
