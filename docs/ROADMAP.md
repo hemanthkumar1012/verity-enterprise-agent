@@ -25,7 +25,9 @@
 - [x] Search API
 - [x] Evidence result scoring
 - [x] Basic source citations
-- [ ] Full-text retrieval
+- [x] Persistent document storage
+- [x] PostgreSQL full-text retrieval
+- [ ] Full-text hybrid retrieval
 - [ ] Vector retrieval
 - [ ] Reciprocal-rank fusion
 - [ ] Reranking
