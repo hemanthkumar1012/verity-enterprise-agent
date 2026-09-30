@@ -1,5 +1,4 @@
 from pathlib import Path
-
 import os
 
 from fastapi import FastAPI
@@ -7,6 +6,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
 
 from app.api.routes.documents import router as documents_router
+from app.api.routes.search import router as search_router
 from app.settings import settings
 
 
@@ -21,7 +21,10 @@ app = FastAPI(
 
 allowed_origins = [
     origin.strip()
-    for origin in os.getenv("ALLOWED_ORIGINS", "http://localhost:3000,http://localhost:5500").split(",")
+    for origin in os.getenv(
+        "ALLOWED_ORIGINS",
+        "http://localhost:3000,http://localhost:5500",
+    ).split(",")
     if origin.strip()
 ]
 
@@ -34,6 +37,7 @@ app.add_middleware(
 )
 
 app.include_router(documents_router)
+app.include_router(search_router)
 
 if FRONTEND_DIR.exists():
     app.mount("/workspace", StaticFiles(directory=FRONTEND_DIR, html=True), name="workspace")
