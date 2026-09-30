@@ -21,11 +21,15 @@
 - [ ] Image extraction
 
 ## Milestone 3 — Hybrid RAG
+- [x] Deterministic lexical retrieval
+- [x] Search API
+- [x] Evidence result scoring
+- [x] Basic source citations
 - [ ] Full-text retrieval
 - [ ] Vector retrieval
 - [ ] Reciprocal-rank fusion
 - [ ] Reranking
-- [ ] Source provenance
+- [ ] Persistent source provenance
 
 ## Milestone 4 — Multimodal evidence
 - [ ] Image understanding
