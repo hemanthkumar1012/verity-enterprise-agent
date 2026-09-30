@@ -3,6 +3,7 @@ from typing import Annotated
 from fastapi import APIRouter, File, HTTPException, UploadFile
 
 from app.models.document import IngestedDocument
+from app.services.document_store import save_document
 from app.services.ingestion import ingest_document
 
 
@@ -23,7 +24,8 @@ async def ingest(
 ) -> IngestedDocument:
     try:
         content = await file.read()
-        return ingest_document(file.filename or "", file.content_type, content)
+        document = ingest_document(file.filename or "", file.content_type, content)
+        return save_document(document)
     except ValueError as exc:
         raise HTTPException(status_code=400, detail=str(exc)) from exc
     finally:
