@@ -9,6 +9,3 @@ services:
     rootDir: .
     healthCheckPath: /health
     autoDeploy: true
-    envVars:
-      - key: PYTHON_VERSION
-        value: "3.12"
