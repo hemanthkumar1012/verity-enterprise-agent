@@ -38,3 +38,20 @@ def test_document_ingest_api():
     assert response.status_code == 200
     assert response.json()["filename"] == "notes.txt"
     assert response.json()["chunk_count"] == 1
+
+
+def test_search_api_returns_uploaded_evidence():
+    from fastapi.testclient import TestClient
+    from app.main import app
+
+    client = TestClient(app)
+    upload = client.post(
+        "/api/documents/ingest",
+        files={"file": ("search.txt", b"Verity provides evidence retrieval for research.", "text/plain")},
+    )
+    assert upload.status_code == 200
+
+    response = client.get("/api/search", params={"q": "evidence retrieval"})
+    assert response.status_code == 200
+    assert response.json()["count"] >= 1
+    assert response.json()["results"][0]["citation"].startswith("search.txt")
