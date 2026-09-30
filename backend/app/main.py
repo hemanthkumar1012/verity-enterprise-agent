@@ -8,6 +8,7 @@ from fastapi.staticfiles import StaticFiles
 from app.api.routes.documents import router as documents_router
 from app.api.routes.search import router as search_router
 from app.settings import settings
+from app.storage.database import initialize_database
 
 
 PROJECT_ROOT = Path(__file__).resolve().parents[2]
@@ -35,6 +36,8 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+initialize_database()
 
 app.include_router(documents_router)
 app.include_router(search_router)
