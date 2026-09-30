@@ -2,8 +2,8 @@ from typing import Annotated
 
 from fastapi import APIRouter, Query
 
-from app.retrieval.search import SearchResult, search_chunks
-from app.services.document_store import list_chunks
+from app.retrieval.search import SearchResult
+from app.services.document_store import search_chunks
 
 
 router = APIRouter(prefix="/api/search", tags=["search"])
@@ -14,7 +14,7 @@ def search(
     q: Annotated[str, Query(min_length=1, max_length=200, description="Evidence search query")],
     limit: Annotated[int, Query(ge=1, le=20)] = 5,
 ) -> dict[str, object]:
-    results = search_chunks(q, list_chunks(), limit)
+    results = search_chunks(q, limit)
     return {
         "query": q,
         "count": len(results),
