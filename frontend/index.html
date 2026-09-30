@@ -11,33 +11,23 @@
       <aside class="sidebar">
         <div class="brand">
           <div class="brand-mark">V</div>
-          <div>
-            <strong>Verity</strong>
-            <span>Research workspace</span>
-          </div>
+          <div><strong>Verity</strong><span>Research workspace</span></div>
         </div>
-
         <nav>
-          <a class="active" href="#">Research</a>
-          <a href="#">Evidence</a>
-          <a href="#">Approvals</a>
-          <a href="#">Activity</a>
+          <a class="active" href="#research">Research</a>
+          <a href="#evidence">Evidence</a>
+          <a href="#approvals">Approvals</a>
+          <a href="#activity">Activity</a>
         </nav>
-
-        <div class="sidebar-note">
-          <span class="status-dot"></span>
-          Local workspace
-        </div>
+        <div class="sidebar-note"><span class="status-dot"></span><span id="connection-label">Checking API</span></div>
       </aside>
 
-      <main class="main">
+      <main class="main" id="research">
         <header class="topbar">
           <div>
             <p class="eyebrow">ENTERPRISE RESEARCH</p>
             <h1>Build answers from evidence.</h1>
-            <p class="subtitle">
-              Upload documents, inspect extracted evidence, and prepare grounded research workflows.
-            </p>
+            <p class="subtitle">Bring sources into Verity, search the extracted evidence, and keep every result tied to its source.</p>
           </div>
           <div class="topbar-badge">VERITY 0.1</div>
         </header>
@@ -46,63 +36,51 @@
           <article class="hero-card">
             <div>
               <p class="eyebrow">START WITH SOURCES</p>
-              <h2>Bring your research into one workspace.</h2>
-              <p>
-                Verity keeps source files, extracted text, and document chunks ready for
-                retrieval and evidence-based answers.
-              </p>
+              <h2>Build your evidence base.</h2>
+              <p>Upload a source once, then search its extracted chunks without losing the document context behind each result.</p>
             </div>
-
             <label class="upload-box" for="file-input">
               <span class="upload-icon">↑</span>
               <strong>Drop a document here</strong>
               <span>or click to browse · PDF, TXT, MD, CSV, JSON, HTML</span>
               <input id="file-input" type="file" accept=".pdf,.txt,.md,.csv,.json,.html" />
             </label>
-
             <div id="upload-status" class="status hidden"></div>
           </article>
 
           <article class="card">
             <div class="card-heading">
-              <div>
-                <p class="eyebrow">CAPABILITIES</p>
-                <h3>Evidence pipeline</h3>
-              </div>
+              <div><p class="eyebrow">PIPELINE</p><h3>Evidence flow</h3></div>
             </div>
-            <div class="capability">
-              <span>01</span>
-              <div><strong>Ingest</strong><small>Extract clean source text</small></div>
-            </div>
-            <div class="capability">
-              <span>02</span>
-              <div><strong>Chunk</strong><small>Create retrieval-ready evidence</small></div>
-            </div>
-            <div class="capability">
-              <span>03</span>
-              <div><strong>Ground</strong><small>Link answers back to sources</small></div>
-            </div>
+            <div class="capability"><span>01</span><div><strong>Ingest</strong><small>Extract clean source text</small></div></div>
+            <div class="capability"><span>02</span><div><strong>Retrieve</strong><small>Find matching evidence</small></div></div>
+            <div class="capability"><span>03</span><div><strong>Cite</strong><small>Keep source context attached</small></div></div>
           </article>
+        </section>
+
+        <section class="card search-card" id="evidence">
+          <div class="card-heading">
+            <div><p class="eyebrow">EVIDENCE SEARCH</p><h3>Search your sources</h3></div>
+            <span id="search-count" class="pill">0 results</span>
+          </div>
+          <form id="search-form" class="search-form">
+            <input id="search-input" type="search" maxlength="200" placeholder="Ask for a topic, fact, metric, or phrase..." autocomplete="off" />
+            <button type="submit">Search evidence</button>
+          </form>
+          <div id="search-status" class="search-status">Upload a document, then search its evidence.</div>
+          <div id="search-results" class="results-list"></div>
         </section>
 
         <section class="card document-card">
           <div class="card-heading">
-            <div>
-              <p class="eyebrow">LATEST SOURCE</p>
-              <h3 id="document-title">No document ingested yet</h3>
-            </div>
+            <div><p class="eyebrow">LATEST SOURCE</p><h3 id="document-title">No document ingested yet</h3></div>
             <span id="document-status" class="pill">Waiting</span>
           </div>
-
-          <div id="document-summary" class="empty-state">
-            Upload a research document to see its metadata and extracted chunks here.
-          </div>
-
+          <div id="document-summary" class="empty-state">Upload a research document to see its metadata and extracted chunks here.</div>
           <div id="chunk-list" class="chunk-list"></div>
         </section>
       </main>
     </div>
-
     <script src="config.js"></script>
     <script src="app.js"></script>
   </body>
